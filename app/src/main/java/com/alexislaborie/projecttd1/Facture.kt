@@ -26,7 +26,7 @@ import androidx.navigation.NavController
 
 @Composable
 fun Fact(navController: NavController) {
-    var quantité by remember {
+    var quantite by remember {
         mutableStateOf("")
     }
     var prix by remember {
@@ -41,6 +41,19 @@ fun Fact(navController: NavController) {
     var remise by remember {
         mutableStateOf("")
     }
+
+    val montantHT = derivedStateOf {
+        val quantiteValue = quantite.toFloatOrNull() ?: 0f
+        val prixValue = prix.toFloatOrNull() ?: 0f
+        quantiteValue * prixValue
+    }
+    montant = montantHT.value.toString()
+
+    val tvaValue = derivedStateOf {
+        montantHT.value * 0.20f // Calcul de la TVA à partir du montant HT (20%)
+    }
+
+    tva = tvaValue.value.toString()
 
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,8 +72,8 @@ fun Fact(navController: NavController) {
                 .fillMaxSize()
         )
         OutlinedTextField(
-            value = quantité,
-            onValueChange = { quantité = it },
+            value = quantite,
+            onValueChange = { quantite = it },
             label = { Label("Quantité") }
         )
         Spacer(
@@ -129,7 +142,7 @@ fun Fact(navController: NavController) {
             }
         }
         ElevatedButton(onClick = {
-            navController.navigate("CalculerTTC")
+            navController.navigate("CalculerTTC/$quantite/$prix/$tva/$remise")
         }) {
             Text(text = "Calculer TTC", fontSize = 20.sp)
         }

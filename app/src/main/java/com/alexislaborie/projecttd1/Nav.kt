@@ -17,9 +17,6 @@ fun Nav(){
         composable(route = "Facture"){
             Fact(navController)
         }
-        composable(route = "CalculerTTC"){
-            Mont(navController)
-        }
         composable(route = "Layout1"){
             layoutOne(navController)
         }
@@ -29,30 +26,28 @@ fun Nav(){
         composable(route = "Layout3"){
             layoutThree(navController)
         }
-        composable("total/{qte}/{prix}/{montant}/{tva}/{remise}/",
+        composable("RCalculerTTC/{qte1}/{prix1}/{tva1}/{remise1}",
             arguments = listOf(
-                navArgument(name="qte"){
+                navArgument(name="qte1"){
                     type= NavType.IntType
                 },
-                navArgument(name="prix"){
+                navArgument(name="prix1"){
                     type= NavType.FloatType
                 },
-                navArgument(name="montant"){
+                navArgument(name="tva1"){
                     type= NavType.FloatType
                 },
-                navArgument(name="tva"){
-                    type= NavType.IntType
-                },
-                navArgument(name="remise"){
-                    type= NavType.IntType
-                },
+                navArgument(name="remise1"){
+                    type= NavType.FloatType
+                }
             )
         )
-        {
-            backstraEntry -> //envois les données type int ou float vers la page choisis
+        {backstraEntry -> //envois les données type int ou float vers la page choisis
                 Mont(
-                    quantité = backstraEntry.arguments?.getInt("qte"),
-                    prix = backstraEntry.arguments?.getInt("prix"),
+                    qte = backstraEntry.arguments?.getInt("qte1"),
+                    prix = backstraEntry.arguments?.getFloat("prix1"),
+                    tva = backstraEntry.arguments?.getFloat("tva1"),
+                    remise = backstraEntry.arguments?.getFloat("remise1"),
                 )
         }
     }

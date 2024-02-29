@@ -21,14 +21,25 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
 
 @Composable
-fun Mont(navController: NavController){
-    var montant by remember {
+fun Mont(qte:Int?, prix:Float?, tva:Float?, remise:Float?){
+    var montantFinal by remember {
         mutableStateOf("")
     }
 
-    Column (horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize()){
+    val montantTTC = if (qte != null && prix != null && tva != null && remise != null){
+        val montantHT = qte * prix
+        val montantTVA = montantHT * tva
+        val montantRemise = montantHT * remise
+        montantHT + montantTVA - montantRemise
+    }else{
+        montantFinal = "Erreur: Vérifiez les valeurs de qte, prix, tva et remise"
+    }
+    Column (
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()){
         Text(
-            text = "Montant TTC",
+            text = "Montant TTC: $montantTTC",
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -38,9 +49,9 @@ fun Mont(navController: NavController){
                 .fillMaxSize()
         )
         OutlinedTextField(
-            value = montant,
-            onValueChange = { montant = it },
-            label = { Label("") }
+            value = montantFinal,
+            onValueChange = { montantFinal = it },
+            label = { Text("Label") }
         )
         Spacer(
             Modifier
