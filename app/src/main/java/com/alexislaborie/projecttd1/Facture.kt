@@ -142,7 +142,7 @@ fun Fact(navController: NavController) {
             }
         }
         ElevatedButton(onClick = {
-            navController.navigate("CalculerTTC/$quantite/$prix/$tva/$remise")
+            navController.navigate("RCalculerTTC/$quantite/$prix/$tva/$remise")
         }) {
             Text(text = "Calculer TTC", fontSize = 20.sp)
         }
